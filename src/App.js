@@ -18,8 +18,8 @@ class App extends React.Component {
       isSaveButtonDisabled: true,
     };
     this.onInputChange = this.onInputChange.bind(this);
-  }  
-  
+  }
+
   onInputChange({ target }) {
     const { name, type } = target;
     const value = type === 'checkbox' ? target.checked : target.value;
@@ -75,7 +75,7 @@ class App extends React.Component {
           hasTrunfo={ hasTrunfo }
           isSaveButtonDisabled={ isSaveButtonDisabled }
         />
-      </div>  
+      </div>
     );
   }
 }
