@@ -2,23 +2,14 @@ import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
 
-const patternState = {
-  cardName: '',
-  cardDescription: '',
-  cardAttr1: '0',
-  cardAttr2: '0',
-  cardAttr3: '0',
-  cardImage: '',
-  cardRare: 'Normal',
-  cardTrunfo: false,
-  hasTrunfo: false,
-  isSaveButtonDisabled: true,
-};
-
-
 class App extends React.Component {
   constructor() {
     super();
+
+    this.onInputChange = this.onInputChange.bind(this);
+    this.isSaveButtonDisabled = this.isSaveButtonDisabled.bind(this);
+    this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
+
     this.state = {
       cardName: '',
       cardDescription: '',
@@ -26,54 +17,37 @@ class App extends React.Component {
       cardAttr2: '0',
       cardAttr3: '0',
       cardImage: '',
-      cardRare: 'Normal',
+      cardRare: 'normal',
       cardTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
-      savedcards: [],
+      cards: [],
     };
-    this.onInputChange = this.onInputChange.bind(this);
-    this.isSaveButtonDisabled = this.isSaveButtonDisabled.bind(this);
-    this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
   }
 
   onInputChange({ target }) {
-    const { name, type } = target;
-    const value = type === 'checkbox' ? target.checked : target.value;
-    this.setState((prevSt) => ({
-      ...prevSt,
-      [name]: value,
-    }), () => this.isSaveButtonDisabled());
+    const { name, value, type, checked } = target;
+    this.setState({
+      [name]: type === 'checkbox' ? checked : value,
+    }, () => this.isSaveButtonDisabled());
   }
 
-  onSaveButtonClick(event) {
-    event.preventDefault();
-    const {
-      cardName,
-      cardDescription,
-      cardAttr1,
-      cardAttr2,
-      cardAttr3,
-      cardImage,
-      cardRare,
-      hasTrunfo,
-      savedCards,
-    } = this.state;
-    const card = {
-      cardName,
-      cardDescription,
-      cardAttr1,
-      cardAttr2,
-      cardAttr3,
-      cardImage,
-      cardRare,
-      hasTrunfo,
-    };
-    const cards = [...savedCards, card];
-    console.log(cards);
-    this.setState(patternState, () => {
+  onSaveButtonClick(e) {
+    e.preventDefault();
+
+    this.setState((before) => ({
+      cards: [...before.cards, before],
+    }), () => {
       this.setState({
-        savedCards: cards,
+        cardName: '',
+        cardDescription: '',
+        cardAttr1: '0',
+        cardAttr2: '0',
+        cardAttr3: '0',
+        cardImage: '',
+        cardRare: 'normal',
+        hasTrunfo: false,
+        isSavedButtonDisabled: true,
       });
     });
   }
@@ -82,73 +56,43 @@ class App extends React.Component {
     const {
       cardName,
       cardDescription,
+      cardImage,
+      cardRare,
       cardAttr1,
       cardAttr2,
       cardAttr3,
-      cardImage,
-      cardRare,
     } = this.state;
-    const attr1 = parseInt(cardAttr1, 10);
-    const attr2 = parseInt(cardAttr2, 10);
-    const attr3 = parseInt(cardAttr3, 10);
-    let disable = false;
-    const attrSum = attr1 + attr2 + attr3;
-    const maxAttrSum = 210;
-    const maxAttr = 90;
-    const minAttr = 0;
-    if (!cardName || !cardDescription || !cardImage || !cardRare) disable = true;
-    if (attrSum > maxAttrSum) disable = true;
-    if (attr1 > maxAttr || attr2 > maxAttr || attr3 > maxAttr) disable = true;
-    if (attr1 < minAttr || attr2 < minAttr || attr3 < minAttr) disable = true;
+    const max = 90;
+    const min = 0;
+    const maxSum = 210;
+    const sum = Number(cardAttr1) + Number(cardAttr2) + Number(cardAttr3);
+    let valid = false;
+    if (sum > maxSum) valid = true;
+    if (Number(cardAttr1) > max || Number(cardAttr1) < min) valid = true;
+    if (Number(cardAttr2) > max || Number(cardAttr2) < min) valid = true;
+    if (Number(cardAttr3) > max || Number(cardAttr3) < min) valid = true;
+    if (!cardName || !cardDescription || !cardImage || !cardRare) valid = true;
     this.setState({
-      isSaveButtonDisabled: disable,
+      isSaveButtonDisabled: valid,
     });
   }
 
   render() {
-    const {
-      cardName,
-      cardDescription,
-      cardAttr1,
-      cardAttr2,
-      cardAttr3,
-      cardImage,
-      cardRare,
-      cardTrunfo,
-      hasTrunfo,
-      isSaveButtonDisabled,
-    } = this.state;
+    const thisProps = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
-        <Form
-          cardName={ cardName }
-          cardDescription={ cardDescription }
-          cardAttr1={ cardAttr1 }
-          cardAttr2={ cardAttr2 }
-          cardAttr3={ cardAttr3 }
-          cardImage={ cardImage }
-          cardRare={ cardRare }
-          cardTrunfo={ cardTrunfo }
-          hasTrunfo={ hasTrunfo }
-          isSaveButtonDisabled={ isSaveButtonDisabled }
-          onInputChange={ this.onInputChange }
-          onSaveButtonClick={ this.onSaveButtonClick }
-        />
-        <Card
-          cardName={ cardName }
-          cardDescription={ cardDescription }
-          cardAttr1={ cardAttr1 }
-          cardAttr2={ cardAttr2 }
-          cardAttr3={ cardAttr3 }
-          cardImage={ cardImage }
-          cardRare={ cardRare }
-          cardTrunfo={ cardTrunfo }
-          hasTrunfo={ hasTrunfo }
-          isSaveButtonDisabled={ isSaveButtonDisabled }
-        />
+        <div className="container">
+          <Form
+            { ...thisProps }
+            onInputChange={ this.onInputChange }
+            onSaveButtonClick={ this.onSaveButtonClick }
+          />
+          <Card { ...thisProps } />
+        </div>
       </div>
     );
   }
 }
+
 export default App;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class Form extends React.Component {
+class Form extends Component {
   render() {
     const {
       cardName,
@@ -12,82 +12,89 @@ class Form extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
-      // hasTrunfo,
+      //   hasTrunfo,
       isSaveButtonDisabled,
       onInputChange,
       onSaveButtonClick,
     } = this.props;
     return (
-      <form>
-        <label htmlFor="name">
-          Nome
+      <form className="forms">
+        <label className="labels" htmlFor="name">
+          Digite o nome da carta:
           <input
             type="text"
             data-testid="name-input"
+            className="text"
             name="cardName"
             value={ cardName }
             onChange={ onInputChange }
           />
         </label>
 
-        <label htmlFor="description">
-          Descrição
+        <label className="labels" htmlFor="description">
+          Descreva a carta:
           <textarea
             data-testid="description-input"
+            className="textarea"
             name="cardDescription"
             value={ cardDescription }
             onChange={ onInputChange }
           />
         </label>
 
-        <label htmlFor="attr1">
-          Attr01
+        <label className="labels" htmlFor="attr-1">
+          Attr1:
           <input
             type="number"
             data-testid="attr1-input"
+            className="attr-1"
             name="cardAttr1"
             value={ cardAttr1 }
             onChange={ onInputChange }
           />
         </label>
 
-        <label htmlFor="attr2">
-          Attr02
+        <label className="labels" htmlFor="attr-2">
+          Attr2:
           <input
             type="number"
             data-testid="attr2-input"
+            className="attr-2"
             name="cardAttr2"
             value={ cardAttr2 }
             onChange={ onInputChange }
           />
         </label>
 
-        <label htmlFor="attr3">
-          Attr03
+        <label className="labels" htmlFor="attr-3">
+          Attr2:
           <input
             type="number"
             data-testid="attr3-input"
+            className="attr-3"
             name="cardAttr3"
             value={ cardAttr3 }
             onChange={ onInputChange }
           />
         </label>
 
-        <label htmlFor="image">
-          Imagem
+        <label className="labels" htmlFor="image">
+          URL da imagem:
           <input
             type="text"
             data-testid="image-input"
+            className="image"
             name="cardImage"
             value={ cardImage }
             onChange={ onInputChange }
           />
         </label>
 
-        <label htmlFor="select">
-          Raridade
+        <label className="labels" htmlFor="select">
+          Raridade da carta:
           <select
             data-testid="rare-input"
+            className="select"
             name="cardRare"
             value={ cardRare }
             onChange={ onInputChange }
@@ -97,9 +104,8 @@ class Form extends React.Component {
             <option value="muito raro">muito raro</option>
           </select>
         </label>
-
-        <label htmlFor="checkbox">
-          Super Trybe Trunfo
+        <label className="labels" htmlFor="checkbox">
+          Super Trunfo?
           <input
             type="checkbox"
             data-testid="trunfo-input"
@@ -108,20 +114,19 @@ class Form extends React.Component {
             onChange={ onInputChange }
           />
         </label>
-
         <button
-          type="button"
+          type="submit"
           data-testid="save-button"
           disabled={ isSaveButtonDisabled }
           onClick={ onSaveButtonClick }
         >
           Salvar
         </button>
+
       </form>
     );
   }
 }
-
 Form.propTypes = {
   cardName: PropTypes.string,
   cardDescription: PropTypes.string,
