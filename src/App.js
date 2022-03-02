@@ -91,6 +91,19 @@ class App extends React.Component {
           />
           <Card { ...thisProps } />
         </div>
+        {thisProps.cards.map((obj) => (
+          <Card
+            key={ obj.cardName }
+            cardName={ obj.cardName }
+            cardDescription={ obj.cardDescription }
+            cardAttr1={ obj.cardAttr1 }
+            cardAttr2={ obj.cardAttr2 }
+            cardAttr3={ obj.cardAttr3 }
+            cardImage={ obj.cardImage }
+            cardRare={ obj.cardRare }
+            cardTrunfo={ obj.cardTrunfo }
+          />
+        ))}
       </div>
     );
   }
