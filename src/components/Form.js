@@ -67,7 +67,7 @@ class Form extends Component {
         </label>
 
         <label className="labels" htmlFor="attr-3">
-          Attr2:
+          Attr3:
           <input
             type="number"
             data-testid="attr3-input"
